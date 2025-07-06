@@ -7,6 +7,8 @@
     unused_mut
 )]
 
+use std::intrinsics::AtomicOrdering;
+
 use crate::lqr_globals::*;
 
 /* LiquidRescaling Library
@@ -162,7 +164,7 @@ pub unsafe extern "C" fn lqr_rwindow_fill(
         } else {
         };
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {

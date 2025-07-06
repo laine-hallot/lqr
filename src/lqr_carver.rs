@@ -7,6 +7,8 @@
     unused_mut
 )]
 
+use std::intrinsics::AtomicOrdering;
+
 use crate::lqr_globals::*;
 
 /* LiquidRescaling Library
@@ -66,16 +68,16 @@ pub unsafe extern "C" fn lqr_carver_new_common(
     }
     let mut gais_temp: libc::c_int = LQR_CARVER_STATE_STD as libc::c_int;
 
-    ::std::intrinsics::atomic_store_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int, *&mut gais_temp);
+    ::std::intrinsics::atomic_store::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int, *&mut gais_temp);
     let mut gais_temp_0: libc::c_int = 0 as libc::c_int;
 
-    ::std::intrinsics::atomic_store_seqcst(
+    ::std::intrinsics::atomic_store::<_, {AtomicOrdering::SeqCst}>(
         &mut (*r).state_lock as *mut libc::c_int as *mut libc::c_int,
         *&mut gais_temp_0,
     );
     let mut gais_temp_1: libc::c_int = 0 as libc::c_int;
 
-    ::std::intrinsics::atomic_store_seqcst(
+    ::std::intrinsics::atomic_store::<_, {AtomicOrdering::SeqCst}>(
         &mut (*r).state_lock_queue as *mut libc::c_int as *mut libc::c_int,
         *&mut gais_temp_1,
     );
@@ -444,7 +446,7 @@ pub unsafe extern "C" fn lqr_carver_init(
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -641,7 +643,7 @@ pub unsafe extern "C" fn lqr_carver_set_image_type(mut r: *mut LqrCarver, mut im
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -717,7 +719,7 @@ pub unsafe extern "C" fn lqr_carver_build_maps(mut r: *mut LqrCarver, mut depth:
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -762,7 +764,7 @@ pub unsafe extern "C" fn lqr_carver_build_emap(mut r: *mut LqrCarver) -> LqrRetV
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -783,7 +785,7 @@ pub unsafe extern "C" fn lqr_carver_build_emap(mut r: *mut LqrCarver) -> LqrRetV
             let mut gaig_temp: libc::c_int = 0;
 
             *(&mut gaig_temp as *mut libc::c_int) =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
         {
@@ -847,7 +849,7 @@ pub unsafe extern "C" fn lqr_carver_build_mmap(mut r: *mut LqrCarver) -> LqrRetV
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -868,7 +870,7 @@ pub unsafe extern "C" fn lqr_carver_build_mmap(mut r: *mut LqrCarver) -> LqrRetV
                 let mut gaig_temp: libc::c_int = 0;
 
                 *(&mut gaig_temp as *mut libc::c_int) =
-                    ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                    ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
                 gaig_temp
             }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
             {
@@ -963,7 +965,7 @@ pub unsafe extern "C" fn lqr_carver_build_vsmap(mut r: *mut LqrCarver, mut depth
             let mut gaig_temp: libc::c_int = 0;
 
             *(&mut gaig_temp as *mut libc::c_int) =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
         {
@@ -1066,7 +1068,7 @@ pub unsafe extern "C" fn lqr_carver_inflate(mut r: *mut LqrCarver, mut l: libc::
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -1077,7 +1079,7 @@ pub unsafe extern "C" fn lqr_carver_inflate(mut r: *mut LqrCarver, mut l: libc::
             let mut gaig_temp: libc::c_int = 0;
 
             *&mut gaig_temp =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) as LqrCarverState;
         let mut ret_val: LqrRetVal = LQR_ERROR;
@@ -1294,7 +1296,7 @@ pub unsafe extern "C" fn lqr_carver_inflate(mut r: *mut LqrCarver, mut l: libc::
             let mut gaig_temp: libc::c_int = 0;
 
             *(&mut gaig_temp as *mut libc::c_int) =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
         {
@@ -1680,7 +1682,7 @@ pub unsafe extern "C" fn lqr_carver_update_emap(mut r: *mut LqrCarver) -> LqrRet
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -1751,7 +1753,7 @@ pub unsafe extern "C" fn lqr_carver_update_emap(mut r: *mut LqrCarver) -> LqrRet
             let mut gaig_temp: libc::c_int = 0;
 
             *(&mut gaig_temp as *mut libc::c_int) =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
         {
@@ -1797,7 +1799,7 @@ pub unsafe extern "C" fn lqr_carver_update_mmap(mut r: *mut LqrCarver) -> LqrRet
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -1855,7 +1857,7 @@ pub unsafe extern "C" fn lqr_carver_update_mmap(mut r: *mut LqrCarver) -> LqrRet
             let mut gaig_temp: libc::c_int = 0;
 
             *(&mut gaig_temp as *mut libc::c_int) =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
         {
@@ -3439,7 +3441,7 @@ pub unsafe extern "C" fn lqr_carver_propagate_vsmap(mut r: *mut LqrCarver) -> Lq
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -3507,7 +3509,7 @@ pub unsafe extern "C" fn lqr_carver_flatten(mut r: *mut LqrCarver) -> LqrRetVal 
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -3518,7 +3520,7 @@ pub unsafe extern "C" fn lqr_carver_flatten(mut r: *mut LqrCarver) -> LqrRetVal 
             let mut gaig_temp: libc::c_int = 0;
 
             *&mut gaig_temp =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) as LqrCarverState;
         let mut ret_val: LqrRetVal = LQR_ERROR;
@@ -3760,7 +3762,7 @@ pub unsafe extern "C" fn lqr_carver_flatten(mut r: *mut LqrCarver) -> LqrRetVal 
             let mut gaig_temp: libc::c_int = 0;
 
             *(&mut gaig_temp as *mut libc::c_int) =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
         {
@@ -3973,7 +3975,7 @@ pub unsafe extern "C" fn lqr_carver_transpose(mut r: *mut LqrCarver) -> LqrRetVa
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -3984,7 +3986,7 @@ pub unsafe extern "C" fn lqr_carver_transpose(mut r: *mut LqrCarver) -> LqrRetVa
             let mut gaig_temp: libc::c_int = 0;
 
             *&mut gaig_temp =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) as LqrCarverState;
         let mut ret_val: LqrRetVal = LQR_ERROR;
@@ -4671,7 +4673,7 @@ pub unsafe extern "C" fn lqr_carver_resize_width(mut r: *mut LqrCarver, mut w1: 
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -4681,7 +4683,7 @@ pub unsafe extern "C" fn lqr_carver_resize_width(mut r: *mut LqrCarver, mut w1: 
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_STD as libc::c_int) as libc::c_int
         == 0 as libc::c_int
@@ -4800,7 +4802,7 @@ pub unsafe extern "C" fn lqr_carver_resize_height(mut r: *mut LqrCarver, mut h1:
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
@@ -4810,7 +4812,7 @@ pub unsafe extern "C" fn lqr_carver_resize_height(mut r: *mut LqrCarver, mut h1:
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) == LQR_CARVER_STATE_STD as libc::c_int) as libc::c_int
         == 0 as libc::c_int
@@ -4914,11 +4916,11 @@ pub unsafe extern "C" fn lqr_carver_resize(
         return LQR_ERROR;
     }
 
-    if ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int) == LQR_CARVER_STATE_CANCELLED as _ {
+    if ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int) == LQR_CARVER_STATE_CANCELLED as _ {
         return LQR_USRCANCEL;
     }
 
-    if ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int) != LQR_CARVER_STATE_STD as _ {
+    if ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int) != LQR_CARVER_STATE_STD as _ {
         return LQR_ERROR;
     }
 
@@ -4966,13 +4968,13 @@ pub unsafe extern "C" fn lqr_carver_set_state(
         return LQR_ERROR;
     }
     let mut lock_pos: libc::c_int =
-        { ::std::intrinsics::atomic_xadd_seqcst(&mut (*r).state_lock_queue as *mut libc::c_int, 1 as libc::c_int) };
+        { ::std::intrinsics::atomic_xadd::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock_queue as *mut libc::c_int, 1 as libc::c_int) };
     /* GLIB_VERSION < 2.30 */
     while ({
         let mut gaig_temp: libc::c_int = 0;
 
         *(&mut gaig_temp as *mut libc::c_int) =
-            ::std::intrinsics::atomic_load_seqcst(&mut (*r).state_lock as *mut libc::c_int as *mut libc::c_int);
+            ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock as *mut libc::c_int as *mut libc::c_int);
         gaig_temp
     }) != lock_pos
     {
@@ -4983,16 +4985,16 @@ pub unsafe extern "C" fn lqr_carver_set_state(
             let mut gaig_temp: libc::c_int = 0;
 
             *(&mut gaig_temp as *mut libc::c_int) =
-                ::std::intrinsics::atomic_load_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
+                ::std::intrinsics::atomic_load::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int);
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
-        ::std::intrinsics::atomic_xadd_seqcst(&mut (*r).state_lock, 1 as libc::c_int);
+        ::std::intrinsics::atomic_xadd::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock, 1 as libc::c_int);
         return LQR_OK;
     }
     let mut gais_temp: libc::c_int = state as libc::c_int;
 
-    ::std::intrinsics::atomic_store_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int, *&mut gais_temp);
+    ::std::intrinsics::atomic_store::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int, *&mut gais_temp);
     data_tok.integer = state as libc::c_int;
     let mut ret_val: LqrRetVal = LQR_ERROR;
     ret_val = crate::lqr_carver_list::lqr_carver_list_foreach_recursive(
@@ -5004,14 +5006,14 @@ pub unsafe extern "C" fn lqr_carver_set_state(
         return ret_val;
     }
 
-    ::std::intrinsics::atomic_xadd_seqcst(&mut (*r).state_lock, 1 as libc::c_int);
+    ::std::intrinsics::atomic_xadd::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock, 1 as libc::c_int);
     return LQR_OK;
 }
 
 pub unsafe extern "C" fn lqr_carver_set_state_attached(mut r: *mut LqrCarver, mut data: LqrDataTok) -> LqrRetVal {
     let mut gais_temp: libc::c_int = data.integer;
 
-    ::std::intrinsics::atomic_store_seqcst(&mut (*r).state as *mut libc::c_int as *mut libc::c_int, *&mut gais_temp);
+    ::std::intrinsics::atomic_store::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state as *mut libc::c_int as *mut libc::c_int, *&mut gais_temp);
     return LQR_OK;
 }
 
