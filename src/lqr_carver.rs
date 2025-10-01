@@ -4968,7 +4968,7 @@ pub unsafe extern "C" fn lqr_carver_set_state(
         return LQR_ERROR;
     }
     let mut lock_pos: libc::c_int =
-        { ::std::intrinsics::atomic_xadd::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock_queue as *mut libc::c_int, 1 as libc::c_int) };
+        { ::std::intrinsics::atomic_xadd::<_, _, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock_queue as *mut libc::c_int, 1 as libc::c_int) };
     /* GLIB_VERSION < 2.30 */
     while ({
         let mut gaig_temp: libc::c_int = 0;
@@ -4989,7 +4989,7 @@ pub unsafe extern "C" fn lqr_carver_set_state(
             gaig_temp
         }) == LQR_CARVER_STATE_CANCELLED as libc::c_int
     {
-        ::std::intrinsics::atomic_xadd::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock, 1 as libc::c_int);
+        ::std::intrinsics::atomic_xadd::<_, _, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock, 1 as libc::c_int);
         return LQR_OK;
     }
     let mut gais_temp: libc::c_int = state as libc::c_int;
@@ -5006,7 +5006,7 @@ pub unsafe extern "C" fn lqr_carver_set_state(
         return ret_val;
     }
 
-    ::std::intrinsics::atomic_xadd::<_, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock, 1 as libc::c_int);
+    ::std::intrinsics::atomic_xadd::<_, _, {AtomicOrdering::SeqCst}>(&mut (*r).state_lock, 1 as libc::c_int);
     return LQR_OK;
 }
 
